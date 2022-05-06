@@ -27,13 +27,19 @@ func Middleware(serverName string, opts ...Option) func(next http.Handler) http.
 	for _, opt := range opts {
 		opt.apply(&cfg)
 	}
-	if cfg.TracerProvider == nil {
-		cfg.TracerProvider = otel.GetTracerProvider()
+
+	var tracer oteltrace.Tracer
+	if cfg.Tracer != nil {
+		tracer = cfg.Tracer
+	} else {
+		if cfg.TracerProvider == nil {
+			cfg.TracerProvider = otel.GetTracerProvider()
+		}
+		tracer = cfg.TracerProvider.Tracer(
+			tracerName,
+			oteltrace.WithInstrumentationVersion(otelcontrib.SemVersion()),
+		)
 	}
-	tracer := cfg.TracerProvider.Tracer(
-		tracerName,
-		oteltrace.WithInstrumentationVersion(otelcontrib.SemVersion()),
-	)
 	if cfg.Propagators == nil {
 		cfg.Propagators = otel.GetTextMapPropagator()
 	}

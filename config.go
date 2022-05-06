@@ -9,6 +9,7 @@ import (
 // config is used to configure the mux middleware.
 type config struct {
 	TracerProvider          oteltrace.TracerProvider
+	Tracer                  oteltrace.Tracer
 	Propagators             propagation.TextMapPropagator
 	ChiRoutes               chi.Routes
 	RequestMethodInSpanName bool
@@ -39,6 +40,14 @@ func WithPropagators(propagators propagation.TextMapPropagator) Option {
 func WithTracerProvider(provider oteltrace.TracerProvider) Option {
 	return optionFunc(func(cfg *config) {
 		cfg.TracerProvider = provider
+	})
+}
+
+// WithTracer specifies a tracer to use for creating spans.
+// If none is specified, the global provider is used.
+func WithTracer(tracer oteltrace.Tracer) Option {
+	return optionFunc(func(cfg *config) {
+		cfg.Tracer = tracer
 	})
 }
 
