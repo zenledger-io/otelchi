@@ -1,4 +1,4 @@
-module github.com/riandyrn/otelchi
+module github.com/zenledger-io/otelchi
 
 go 1.15
 
