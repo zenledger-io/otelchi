@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	tracerName = "github.com/riandyrn/otelchi"
+	tracerName = "github.com/zenledger-io/otelchi"
 )
 
 // Middleware sets up a handler to start tracing the incoming
